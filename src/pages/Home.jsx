@@ -69,7 +69,7 @@ function Home(props) {
       console.log(parseResponse);
 
       if (parseResponse.status == true) {
-        props.history.push({pathname: `/room/${room_link}`, search: '?query=abc', state:{parseResponse} });
+        props.history.push({pathname: `/room/${room_link}`, state:{parseResponse} });
         // toast.success("Room created");
       } else {
         toast.error(parseResponse);
@@ -164,24 +164,36 @@ function Home(props) {
       console.error(err.message);
     }
   };
-
-  const joinRoom = (roomInfo) => {
+ 
+  const joinRoom = async (roomInfo) => {
     if (roomInfo.status === true) {
       const body = {
-        user_id,
-        room_name,
-        password,
-        room_link,
-        status,
-        room_member,
+        user_id: roomInfo.user_id,
+        room_name: roomInfo.room_name,
+        password: roomInfo.password,
+        room_link: roomInfo.room_link,
+        status: roomInfo.status,
       };
 
-    //   const response = await fetch("http://localhost:5000/rooms/userjoined", {
-    //     method: "PUT",
-    //     headers: { "Content-type": "application/json" },
-    //     body: JSON.stringify(body),
-    //   });
-      props.history.push(`/room/${roomInfo.room_link}`);
+	  console.log(body);
+
+      const response = await fetch("http://localhost:5000/rooms/userjoined/", {
+        method: "PUT",
+        headers: { "Content-type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+	  const parseResponse = await response.json();
+      console.log(parseResponse);
+
+	  if (parseResponse.status == true) {
+        props.history.push({pathname: `/room/${parseResponse.room_link}`, state:{parseResponse} });
+        // toast.success("Room created");
+      } else {
+        toast.error(parseResponse);
+      }
+
+    //   props.history.push({pathname: `/room/${room_link}`, state:{parseResponse} });
     } else {
       toast.error("Room Unavailable");
     }

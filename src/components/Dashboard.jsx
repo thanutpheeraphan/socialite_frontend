@@ -11,7 +11,7 @@ const Dashboard = ({ setAuth }) => {
       });
 
 	  const parseResponse = await response.json();
-
+	  console.log(parseResponse)
 	  setName(parseResponse.user_name)
 
 	//   console.log(parseResponse);

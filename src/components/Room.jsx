@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
-import { toast } from "react-toastify";
 import { useLocation , Link} from "react-router-dom";
 
 const Container = styled.div`
@@ -38,23 +37,6 @@ const videoConstraints = {
 };
 
 const Room = (props) => {
-  const location = useLocation();
-  const closeRoom = async () =>{
-	  try {
-		// const id = location.state.parseResponse.room_name;
-		const params = location.state.parseResponse.room_link;
-		const closeRoom = await fetch (`http://localhost:5000/rooms/close/${params}`,{
-			method: "DELETE"
-		});
-		
-		props.history.push(`/home`);
-		// console.log(location.state.parseResponse.room_name);
-		  
-	  } catch (err) {
-		  console.error(err.message);
-	  }
-  }
-
 
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
@@ -62,8 +44,35 @@ const Room = (props) => {
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
 
+
+  const location = useLocation();
+  const closeRoom = async () =>{
+	  try {
+		
+		const url = window.location.href
+		console.log(url.split("http://localhost:3000/room/"));
+		const params = location.state.parseResponse.room_link;
+		console.log(location.state.parseResponse, " parseResponse")
+		const closeRoom = await fetch (`http://localhost:5000/rooms/close/${params}`,{
+			method: "DELETE"
+		});
+		
+		props.history.push(`/home`);	
+		// console.log("doing emit");
+		// console.log(socketRef);
+		// socketRef.on("emit", (arg1) => {
+		// 	console.log(arg1," arg1"); // 1
+		// 	// console.log(arg2, " arg2"); // "2"
+		//   });	  
+	  } catch (err) {
+		  console.error(err.message);
+	  }
+  }
+
   useEffect(() => {
-    socketRef.current = io.connect("/");
+    socketRef.current = io("http://localhost:8000", {
+		withCredentials: true,
+	  });
     console.log(socketRef.current);
     navigator.mediaDevices
       .getUserMedia({ video: videoConstraints, audio: true })
@@ -88,6 +97,7 @@ const Room = (props) => {
         });
 
         socketRef.current.on("user joined", (payload) => {
+		  console.log("user joined");
           const peer = addPeer(payload.signal, payload.callerID, stream);
           peersRef.current.push({
             peerID: payload.callerID,
