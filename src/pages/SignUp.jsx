@@ -22,7 +22,7 @@ const SignUp = ({setAuth})=>{
 
 			const body = {email,password,name};
 
-			const response = await fetch("http://localhost:5000/auth/register",
+			const response = await fetch("http://704d-171-96-72-139.ngrok.io/auth/register",
 			{
 				method:"POST",
 				headers:{"Content-type": "application/json"},
