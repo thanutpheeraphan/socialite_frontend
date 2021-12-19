@@ -5,7 +5,7 @@ const Dashboard = ({ setAuth }) => {
 
   async function getName() {
     try {
-      const response = await fetch("http://localhost:5000/dashboard/", {
+      const response = await fetch("http://704d-171-96-72-139.ngrok.io/dashboard/", {
         method: "GET",
         headers: {jwt_token: localStorage.token }
       });
