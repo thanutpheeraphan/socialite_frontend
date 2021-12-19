@@ -33,7 +33,11 @@ function App() {
 
   async function isAuth() {
     try {
-      const response = await fetch("http://localhost:5000/auth/verify", {
+      //proxy
+	  
+	  
+
+      const response = await fetch("/auth/verify", {
         method: "GET",
         headers: { jwt_token: localStorage.token },
       });
@@ -64,41 +68,41 @@ function App() {
            
           </Switch> */}
           <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) =>
-              !isAuthenticated ? (
-                <Homepage {...props} setAuth={setAuth} />
-              ) : (
-                <Redirect to="/home" />
-              )
-            }
-          />
-          <Route
-            exact
-            path="/signup"
-            render={(props) =>
-              !isAuthenticated ? (
-                <SignUp {...props} setAuth={setAuth} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
-          <Route
-            exact
-            path="/home"
-            render={(props) =>
-              isAuthenticated ? (
-                <Home {...props} setAuth={setAuth} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
-		   <Route path="/room/:roomID" component={Room} />
-        </Switch>
+            <Route
+              exact
+              path="/"
+              render={(props) =>
+                !isAuthenticated ? (
+                  <Homepage {...props} setAuth={setAuth} />
+                ) : (
+                  <Redirect to="/home" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/signup"
+              render={(props) =>
+                !isAuthenticated ? (
+                  <SignUp {...props} setAuth={setAuth} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/home"
+              render={(props) =>
+                isAuthenticated ? (
+                  <Home {...props} setAuth={setAuth} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route path="/room/:roomID" component={Room} />
+          </Switch>
         </div>
       </Router>
     </Fragment>

@@ -43,17 +43,14 @@ const Room = (props) => {
   const userVideo = useRef();
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
-
-
   const location = useLocation();
+
+
   const closeRoom = async () =>{
 	  try {
-		
-		const url = window.location.href
-		console.log(url.split("http://localhost:3000/room/"));
 		const params = location.state.parseResponse.room_link;
 		console.log(location.state.parseResponse, " parseResponse")
-		const closeRoom = await fetch (`http://localhost:5000/rooms/close/${params}`,{
+		const closeRoom = await fetch (`/rooms/close/${params}`,{
 			method: "DELETE"
 		});
 		
@@ -70,7 +67,7 @@ const Room = (props) => {
   }
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:8000", {
+    socketRef.current = io("/", {
 		withCredentials: true,
 	  });
     console.log(socketRef.current);

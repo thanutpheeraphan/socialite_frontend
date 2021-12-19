@@ -6,19 +6,33 @@ module.exports = function (app) {
       target: 'http://localhost:5000', // API endpoint 1
       changeOrigin: true,
       pathRewrite: {
-        "^/auth": "",
+        "^/auth": "/auth",
+      },
+      headers: {
+        Connection: "keep-alive"
+      },
+    })
+  );
+  
+  app.use(
+    createProxyMiddleware('/rooms', {
+      target: 'http://localhost:5000', // API endpoint 2
+      changeOrigin: true,
+      pathRewrite: {
+        "^/rooms": "/rooms",
       },
       headers: {
         Connection: "keep-alive"
       }
     })
   );
+
   app.use(
-    createProxyMiddleware('/rooms', {
+    createProxyMiddleware('/exam', {
       target: 'http://localhost:5000', // API endpoint 2
       changeOrigin: true,
       pathRewrite: {
-        "^/rooms": "",
+        "^/exam": "/rooms",
       },
       headers: {
         Connection: "keep-alive"
@@ -31,7 +45,7 @@ module.exports = function (app) {
       target: 'http://localhost:8000', // API endpoint 3
       changeOrigin: true,
       pathRewrite: {
-        "^/": "",
+        "^/test": "/",
       },
       headers: {
         Connection: "keep-alive"

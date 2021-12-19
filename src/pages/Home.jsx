@@ -59,7 +59,7 @@ function Home(props) {
         status,
         room_member,
       };
-      const response = await fetch("http://localhost:5000/rooms/createroom", {
+      const response = await fetch("/rooms/createroom", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
@@ -84,7 +84,7 @@ function Home(props) {
   };
   const getName = async (e) => {
     try {
-      const response = await fetch("http://localhost:5000/dashboard/", {
+      const response = await fetch("/dashboard/", {
         method: "GET",
         headers: { jwt_token: localStorage.token },
       });
@@ -152,7 +152,7 @@ function Home(props) {
     // e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/rooms/getrooms", {
+      const response = await fetch("/rooms/getrooms", {
         method: "GET",
       });
 
@@ -177,7 +177,7 @@ function Home(props) {
 
 	  console.log(body);
 
-      const response = await fetch("http://localhost:5000/rooms/userjoined/", {
+      const response = await fetch("/rooms/userjoined/", {
         method: "PUT",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify(body),
